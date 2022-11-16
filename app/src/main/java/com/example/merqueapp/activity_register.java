@@ -1,5 +1,6 @@
 package com.example.merqueapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -7,7 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +27,8 @@ public class activity_register extends AppCompatActivity {
     TextInputEditText mTextInputEditTextPasswordR;
     TextInputEditText mTextInputEditTextConfirmPassword;
     Button mButtonRegister;
+    FirebaseAuth mAut;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,7 @@ public class activity_register extends AppCompatActivity {
         mTextInputEditTextConfirmPassword= findViewById(R.id.textInputEditTextConfirmPassword);
         mButtonRegister= findViewById(R.id.btnregister);
 
+        mAut= FirebaseAuth.getInstance();
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,16 @@ public class activity_register extends AppCompatActivity {
     }
 
     private void createUser(String email, String password, String username) {
+        mAut.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(activity_register.this, "El usuario se Registro Correctamente", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(activity_register.this, "No se puedo registrar el usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
