@@ -13,7 +13,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +31,7 @@ public class activity_register extends AppCompatActivity {
     TextInputEditText mTextInputEditTextConfirmPassword;
     Button mButtonRegister;
     FirebaseAuth mAut;
+    FirebaseFirestore mFirestore;
 
 
     @Override
@@ -44,6 +48,7 @@ public class activity_register extends AppCompatActivity {
         mButtonRegister= findViewById(R.id.btnregister);
 
         mAut= FirebaseAuth.getInstance();
+        mFirestore= FirebaseFirestore.getInstance();
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,12 +98,29 @@ public class activity_register extends AppCompatActivity {
 
     }
 
-    private void createUser(String email, String password, String username) {
+    private void createUser(final String email, String password, final String username) {
         mAut.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    String id= mAut.getCurrentUser().getUid();
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("email", email);
+                    map.put("username", username);
+                    map.put("password", password);
+                    mFirestore.collection("Users").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                              Toast.makeText(activity_register.this, "El usuario se almaceno", Toast.LENGTH_SHORT).show();
+                            else{
+                                Toast.makeText(activity_register.this, "El usuario No se almaceno", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     Toast.makeText(activity_register.this, "El usuario se Registro Correctamente", Toast.LENGTH_SHORT).show();
+
+
                 }else{
                     Toast.makeText(activity_register.this, "No se puedo registrar el usuario", Toast.LENGTH_SHORT).show();
                 }
