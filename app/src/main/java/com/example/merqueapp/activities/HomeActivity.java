@@ -1,8 +1,10 @@
-package com.example.merqueapp;
+package com.example.merqueapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.merqueapp.R;
 
 public class HomeActivity extends AppCompatActivity {
 

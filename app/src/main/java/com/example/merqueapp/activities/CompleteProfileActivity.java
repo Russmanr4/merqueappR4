@@ -1,4 +1,4 @@
-package com.example.merqueapp;
+package com.example.merqueapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.merqueapp.R;
+import com.example.merqueapp.models.User;
+import com.example.merqueapp.providers.AuthProviders;
+import com.example.merqueapp.providers.UsersProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,8 +25,10 @@ import java.util.Map;
 public class CompleteProfileActivity extends AppCompatActivity {
     TextInputEditText mTextImputUsername;
     Button mButtonRegister;
-    FirebaseAuth mAuth;
-    FirebaseFirestore mFirestore;
+    //FirebaseAuth mAuth;
+    //FirebaseFirestore mFirestore;
+    AuthProviders mAuthProviders;
+    UsersProvider mUsersProviders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +38,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mTextImputUsername = findViewById(R.id.textInputEditTextUsernameC);
         mButtonRegister=findViewById(R.id.btnConfirmarC);
 
-        mAuth=FirebaseAuth.getInstance();
-        mFirestore=FirebaseFirestore.getInstance();
+        mAuthProviders = new AuthProviders();
+        mUsersProviders = new UsersProvider();
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +62,14 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void updateUser(String username) {
-        String id=mAuth.getCurrentUser().getUid();
+        String id=mAuthProviders.getUid();
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(id);
         Map<String, Object> map = new HashMap<>();
         map.put("username", username);
-        mFirestore.collection("Users").document(id).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        mUsersProviders.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
