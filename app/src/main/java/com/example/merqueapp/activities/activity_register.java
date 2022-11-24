@@ -34,8 +34,6 @@ public class activity_register extends AppCompatActivity {
     TextInputEditText mTextInputEditTextPasswordR;
     TextInputEditText mTextInputEditTextConfirmPassword;
     Button mButtonRegister;
-    //FirebaseAuth mAut;
-    //FirebaseFirestore mFirestore;
     AuthProviders mAuthProvider;
     UsersProvider mUsersProvider;
 
@@ -115,6 +113,7 @@ public class activity_register extends AppCompatActivity {
                     user.setEmail(email);
                     user.setUsername(username);
                     user.setPassword(password);
+
                     mUsersProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

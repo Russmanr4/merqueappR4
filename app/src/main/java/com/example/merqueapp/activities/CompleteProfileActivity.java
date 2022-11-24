@@ -25,8 +25,6 @@ import java.util.Map;
 public class CompleteProfileActivity extends AppCompatActivity {
     TextInputEditText mTextImputUsername;
     Button mButtonRegister;
-    //FirebaseAuth mAuth;
-    //FirebaseFirestore mFirestore;
     AuthProviders mAuthProviders;
     UsersProvider mUsersProviders;
 
@@ -61,13 +59,12 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
     }
 
-    private void updateUser(String username) {
+    private void updateUser( final String username) {
         String id=mAuthProviders.getUid();
         User user = new User();
         user.setUsername(username);
-        user.setEmail(id);
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", username);
+        user.setId(id);
+
 
         mUsersProviders.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

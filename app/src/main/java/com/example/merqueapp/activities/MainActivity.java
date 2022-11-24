@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     SignInButton mbtngoogle;
     AuthProviders mAuthProviders;
     private GoogleSignInClient mGoogleSignInClient;
-    private final int Request_code_Google=1;
+    private final int REQUEST_CODE_GOOGLE= 1;
     UsersProvider mUsersproviders;
 
     @Override
@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void signInGoogle (){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, Request_code_Google);
+        startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE);
 
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == Request_code_Google){
+        if(requestCode == REQUEST_CODE_GOOGLE){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 //google autenticacion fue exitosa
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount account){
         mAuthProviders.googleLogin(account).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
-
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }else{
                             Log.w("error", "signInWithCredential:failure", task.getException());
-
+                            Toast.makeText(MainActivity.this, "no se puedo iniciar sesion con google", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -160,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
                    User user = new User();
                    user.setEmail(email);
                    user.setId(id);
-                    //Map<String, Object> map = new HashMap<>();
-                    //map.put("email", email);
 
                     mUsersproviders.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -169,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Intent intent = new Intent(MainActivity.this, CompleteProfileActivity.class);
                                 startActivity(intent);
-
 
                             }else{
                                 Toast.makeText(MainActivity.this, "No se puedo Almacenar el Usuario", Toast.LENGTH_SHORT).show();
