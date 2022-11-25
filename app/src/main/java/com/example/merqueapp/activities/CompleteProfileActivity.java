@@ -3,6 +3,7 @@ package com.example.merqueapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,17 +17,15 @@ import com.example.merqueapp.providers.UsersProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+import dmax.dialog.SpotsDialog;
 
 public class CompleteProfileActivity extends AppCompatActivity {
     TextInputEditText mTextImputUsername;
     Button mButtonRegister;
     AuthProviders mAuthProviders;
     UsersProvider mUsersProviders;
+    AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,14 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
         mAuthProviders = new AuthProviders();
         mUsersProviders = new UsersProvider();
+
+        mDialog = new  SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espere un momento...")
+                .setCancelable(false)
+                .build();
+
+
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +71,16 @@ public class CompleteProfileActivity extends AppCompatActivity {
         User user = new User();
         user.setUsername(username);
         user.setId(id);
+        mDialog.show();
 
 
         mUsersProviders.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                mDialog.dismiss();
                 if(task.isSuccessful()){
                     Intent intent=new Intent(CompleteProfileActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }else{
 

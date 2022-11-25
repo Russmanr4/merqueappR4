@@ -3,6 +3,7 @@ package com.example.merqueapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,15 +26,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+import dmax.dialog.SpotsDialog;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private final int REQUEST_CODE_GOOGLE= 1;
     UsersProvider mUsersproviders;
+    AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         mAuthProviders= new AuthProviders();
         mUsersproviders = new UsersProvider();
+
+        mDialog = new  SpotsDialog.Builder()
+                        .setContext(this)
+                        .setMessage("Espere un momento...")
+                        .setCancelable(false)
+                        .build();
 
 
         mbtngoogle.setOnClickListener(new View.OnClickListener() {
@@ -125,16 +129,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+        mDialog.show();
         mAuthProviders.googleLogin(account).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()){
 
                             String id= mAuthProviders.getUid();
                             checkUserExist(id);
 
                         }else{
+                            mDialog.dismiss();
                             Log.w("error", "signInWithCredential:failure", task.getException());
                             Toast.makeText(MainActivity.this, "no se puedo iniciar sesion con google", Toast.LENGTH_SHORT).show();
                         }
@@ -150,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
+                    mDialog.dismiss();
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
 
@@ -163,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                     mUsersproviders.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            mDialog.dismiss();
                             if(task.isSuccessful()){
                                 Intent intent = new Intent(MainActivity.this, CompleteProfileActivity.class);
                                 startActivity(intent);
@@ -183,10 +192,13 @@ public class MainActivity extends AppCompatActivity {
 
         String email = mTextInputEditTextEmail.getText().toString();
         String password = mTextInputEditTextPassword.getText().toString();
+        mDialog.show(); /*muestra*/
+
 
         mAuthProviders.login(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                mDialog.dismiss(); /*oculta*/
                 if (task.isSuccessful()){
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -203,4 +215,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("campo" , "password "   +  password);
 
     }
+
+
 }

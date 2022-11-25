@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MerqueApp</string>
+    <string name="hola">Dialog</string>
 </resources>

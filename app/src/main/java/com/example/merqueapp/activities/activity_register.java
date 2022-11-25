@@ -3,6 +3,8 @@ package com.example.merqueapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,15 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class activity_register extends AppCompatActivity {
 
@@ -36,7 +35,7 @@ public class activity_register extends AppCompatActivity {
     Button mButtonRegister;
     AuthProviders mAuthProvider;
     UsersProvider mUsersProvider;
-
+    AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,14 @@ public class activity_register extends AppCompatActivity {
 
         mAuthProvider = new AuthProviders();
         mUsersProvider = new UsersProvider();
+
+        mDialog = new  SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espere un momento...")
+                .setCancelable(false)
+                .build();
+
+
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +110,7 @@ public class activity_register extends AppCompatActivity {
     }
 
     private void createUser(final String email, String password, final String username) {
+        mDialog.show();
         mAuthProvider.register(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -117,23 +125,31 @@ public class activity_register extends AppCompatActivity {
                     mUsersProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful())
-                              Toast.makeText(activity_register.this, "El usuario se almaceno", Toast.LENGTH_SHORT).show();
-                            else{
-                                Toast.makeText(activity_register.this, "El usuario No se almaceno", Toast.LENGTH_SHORT).show();
-                            }
+                            mDialog.dismiss();
+                          if (task.isSuccessful()){
+                            Toast.makeText(activity_register.this, "El usuario se almaceno", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(activity_register.this, HomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+
+                        }else{
+
+
+                            Toast.makeText(activity_register.this, "El usuario No se almaceno", Toast.LENGTH_SHORT).show();
                         }
+                    }
                     });
                     Toast.makeText(activity_register.this, "El usuario se Registro Correctamente", Toast.LENGTH_SHORT).show();
 
 
                 }else{
+                    mDialog.dismiss();
                     Toast.makeText(activity_register.this, "No se puedo registrar el usuario", Toast.LENGTH_SHORT).show();
                 }
-            }
+        }
         });
 
-    }
+   }
 
     public boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
