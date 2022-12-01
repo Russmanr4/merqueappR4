@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
             }else if(item.getItemId()==R.id.itemPerfil) {
                 openFragment(new ProfilesFragment());
             }
-            return false;
+            return true;
 
         }
 
