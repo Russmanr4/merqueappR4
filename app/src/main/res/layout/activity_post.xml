@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="220dp"
             android:orientation="vertical"
             android:background="@color/verde">
 
@@ -159,10 +159,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="40dp"
-            android:layout_marginTop="30dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -170,22 +170,22 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                app:cardBackgroundColor="@color/naranga"
-                android:layout_weight="1"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp">
-
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/licores"/>
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/naranga"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="10dp">
 
-            </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/licores" />
+
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                     android:text="LICORES"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
@@ -207,17 +207,17 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    app:cardBackgroundColor="@color/naranga"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    app:cardCornerRadius="20dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/naranga"
+                    app:cardCornerRadius="15dp"
                     app:cardElevation="10dp">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/viveres"/>
+                        android:src="@drawable/viveres" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -227,7 +227,7 @@
                     android:text="VIVERES"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -240,18 +240,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    app:cardBackgroundColor="@color/naranga"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    app:cardCornerRadius="20dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/naranga"
+                    app:cardCornerRadius="15dp"
                     app:cardElevation="10dp">
 
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/papeleria"/>
+                        android:src="@drawable/papeleria" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -261,7 +261,8 @@
                     android:text="PAPELERIA"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textSize="13dp"/>
 
 
             </LinearLayout>
@@ -275,18 +276,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    app:cardBackgroundColor="@color/naranga"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    app:cardCornerRadius="20dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/naranga"
+                    app:cardCornerRadius="15dp"
                     app:cardElevation="10dp">
 
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/aseo"/>
+                        android:src="@drawable/aseo" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -296,7 +297,7 @@
                     android:text="ASEO"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
