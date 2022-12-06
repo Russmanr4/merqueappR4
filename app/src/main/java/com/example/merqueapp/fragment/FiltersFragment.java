@@ -2,6 +2,7 @@ package com.example.merqueapp.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,9 @@ public class FiltersFragment extends Fragment {
     View vista;
     private RecyclerView recyclerView;
     private ListaPokemonAdapter listaPokemonAdapter;
+
+    private int offset;
+    private boolean aptoParaCargar;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -90,32 +94,63 @@ public class FiltersFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_filters, container, false);
 
         recyclerView = vista.findViewById(R.id.recyclerView);
-        listaPokemonAdapter = new ListaPokemonAdapter();
+        listaPokemonAdapter = new ListaPokemonAdapter(getContext());
         recyclerView.setAdapter(listaPokemonAdapter);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3);
        recyclerView.setLayoutManager(layoutManager);
+
+       recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+           @Override
+           public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+               super.onScrolled(recyclerView, dx, dy);
+
+               if (dy > 0){
+                   int visibleItemcount = layoutManager.getItemCount();
+                   int totalItemcount = layoutManager.getItemCount();
+                   int pastVisibleItems = layoutManager.findFirstCompletelyVisibleItemPosition();
+                   //permite que llegue hasta abajo
+
+                   if (aptoParaCargar){
+                       if((visibleItemcount + pastVisibleItems) >= totalItemcount){
+                            Log.i(TAG, "Llegamos al final de la lista");
+                            aptoParaCargar = false;
+                            offset += 20;
+                            obtenerDatos(offset);
+                       }
+
+                   }
+
+
+               }
+
+           }
+       });
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://pokeapi.co/api/v2/")
                 .addConverterFactory(GsonConverterFactory.create())  //pasar a gson
                 .build();  //para obtener respuesta
 
-
-        obtenerDatos();
+        aptoParaCargar= true;
+        offset = 0;
+        obtenerDatos(offset);
         return vista;
     }
 
-    private void obtenerDatos() {
+    private void obtenerDatos(int offset) {
         PokeapiService service = retrofit.create(PokeapiService.class);
-        Call <PokemonRespuesta> pokemonRespuestaCall = service.obtenerListaPokemon();
+        Call <PokemonRespuesta> pokemonRespuestaCall = service.obtenerListaPokemon(20,offset);
 
         pokemonRespuestaCall.enqueue(new Callback<PokemonRespuesta>() {
             @Override
             public void onResponse(Call<PokemonRespuesta> call, Response<PokemonRespuesta> response) {
+                aptoParaCargar=true;
                 if (response.isSuccessful()){
                     PokemonRespuesta pokemonRespuesta = response.body();
                     ArrayList<Pokemon> listapokemon = pokemonRespuesta.getResults();
+                    listaPokemonAdapter.adicionarListaPokemon(listapokemon);
                     for (int i=0; i<listapokemon.size() ; i++){
                         Pokemon p = listapokemon.get(i);
                         Log.i(TAG,"Pokemon" + p.getName());
@@ -130,6 +165,7 @@ public class FiltersFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PokemonRespuesta> call, Throwable t) {
+                   aptoParaCargar= true;
                    Log.e(TAG, "onFailure" + t.getMessage());
 
             }

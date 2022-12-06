@@ -4,9 +4,11 @@ import com.example.merqueapp.models.PokemonRespuesta;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 
 public interface PokeapiService {
     @GET("Pokemon")
-    Call<PokemonRespuesta> obtenerListaPokemon();
+    Call<PokemonRespuesta> obtenerListaPokemon(@Query("limit") int limit, @Query("offset") int offset);
+    //obtener la lista de pokemon apra que sea parametizable
 }
