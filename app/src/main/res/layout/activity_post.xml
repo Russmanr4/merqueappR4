@@ -45,6 +45,7 @@
                 app:cardCornerRadius="20dp">
 
                 <ImageView
+                    android:id="@+id/imageViewPost1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/subirfoto"/>
@@ -63,6 +64,7 @@
 
 
                 <ImageView
+                    android:id="@+id/imageViewPost2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/subirfoto"/>
@@ -181,6 +183,7 @@
                     app:cardElevation="10dp">
 
                     <ImageView
+                        android:id="@+id/imageViewLicores"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/licores" />
@@ -215,6 +218,7 @@
                     app:cardElevation="10dp">
 
                     <ImageView
+                        android:id="@+id/imageViewViveres"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/viveres" />
@@ -249,6 +253,7 @@
 
 
                     <ImageView
+                        android:id="@+id/imageViewPapeleria"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/papeleria" />
@@ -285,6 +290,7 @@
 
 
                     <ImageView
+                        android:id="@+id/imageViewAseo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/aseo" />
