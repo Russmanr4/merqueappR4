@@ -14,15 +14,19 @@ public class ImageProvider {
 
     StorageReference mStorage;
 
-    public ImageProvider() {
+    public ImageProvider() {mStorage = FirebaseStorage.getInstance().getReference();}
 
-        mStorage = FirebaseStorage.getInstance().getReference();
-    }
+
     public UploadTask save(Context context, File file){
         //arreglo
         byte [] imageByte = CompressorBitmapImage.getImage(context, file.getPath(), 500, 500);
-        StorageReference storage = mStorage.child(new Date() + ".jpg");
+        StorageReference storage = FirebaseStorage.getInstance().getReference().child(new Date() + ".jpg");
         UploadTask task = storage.putBytes(imageByte);
+        mStorage = storage;
         return task;
     }
+    public StorageReference getStorage(){
+        return mStorage;
+    }
+
 }

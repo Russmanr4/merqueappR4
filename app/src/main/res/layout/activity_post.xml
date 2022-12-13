@@ -14,9 +14,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="250dp"
             android:orientation="vertical"
             android:background="@color/verde">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app= "http://schemas.android.com/apk/res-auto"
+                android:id="@+id/circleimageback2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_return"
+                app:civ_border_width="3dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginLeft="15dp"
+                app:civ_border_color="@color/naranga"/>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -26,7 +38,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:layout_marginTop="25dp"/>
+                android:layout_marginTop="9dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -26,7 +26,7 @@ public class CompressorBitmapImage {
             thumb_bitmap = new Compressor(ctx)
                     .setMaxWidth(width)
                     .setMaxHeight(height)
-                    .setQuality(80) //calidad de la imagen
+                    .setQuality(75) //calidad de la imagen
                     .compressToBitmap(file_thumb_path);
         } catch (IOException e) {
             e.printStackTrace();
